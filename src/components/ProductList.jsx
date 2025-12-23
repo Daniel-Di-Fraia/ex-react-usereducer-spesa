@@ -15,11 +15,26 @@ function ProductList() {
         const exists = addedProducts.some(item => item.name === prod.name);
 
         if (exists) {
-            alert(`${prod.name} è già nel carrello!`);
-            return;
-        }
+            updateProductQuantity(prod);
+        } else{
         setAddedProducts(prev => [...prev, { ...prod, quantity: 1 }]);
+        }
     };
+
+    const updateProductQuantity = (prod) => {
+    setAddedProducts(prev =>
+      prev.map(item =>
+        item.name === prod.name
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
+  const removeItem = (nome) => {
+    const removed = addedProducts.filter(item => item.name !== nome);
+    setAddedProducts(removed);
+  }
 
     return (
         <>
@@ -41,6 +56,7 @@ function ProductList() {
                         <strong>{prod.name} </strong>
                         Prezzo: {prod.price}€
                         Quantità: {prod.quantity}
+                        <button id="bottone" onClick={() => removeItem(prod.name)}> X </button>
                     </li>
                 )
                 )}
